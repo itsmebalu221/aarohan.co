@@ -1,18 +1,6 @@
-'use client'
+"use client";
 
-import { useEffect } from 'react'
-
-export default function Error({
-  error,
-  reset,
-}: {
-  error: Error & { digest?: string }
-  reset: () => void
-}) {
-  useEffect(() => {
-    console.error(error)
-  }, [error])
-
+export default function Error() {
   return (
     <section className="min-h-screen flex items-center justify-center">
       <div className="grid-container text-center">
@@ -21,13 +9,13 @@ export default function Error({
         <p className="text-body-md text-mist/60 mb-8">
           An unexpected error has occurred.
         </p>
-        <button
-          onClick={reset}
+        <a
+          href="/"
           className="inline-flex items-center gap-4 text-body-md text-mist/70 hover:text-gold transition-colors duration-300"
         >
-          <span>Try again</span>
+          <span>Return home</span>
           <span className="w-6 h-px bg-current" />
-        </button>
+        </a>
       </div>
     </section>
   )
