@@ -2,6 +2,8 @@
 
 import { useRef, useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { 
   ParallaxColumn, 
   HorizontalDrift, 
@@ -10,7 +12,9 @@ import {
 import ParallaxImage from '@/components/media/ParallaxImage'
 import PixelBlast, { PixelField, PixelConstellation } from '@/components/effects/PixelBlast'
 
-// GSAP will be dynamically imported inside useEffect to avoid SSR issues
+if (typeof window !== 'undefined') {
+  gsap.registerPlugin(ScrollTrigger)
+}
 
 export default function Home() {
   return (

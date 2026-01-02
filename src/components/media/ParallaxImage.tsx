@@ -2,8 +2,10 @@
 
 import { useRef, useEffect } from 'react'
 import Image from 'next/image'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
-// GSAP will be dynamically imported inside useEffect to avoid SSR issues
+gsap.registerPlugin(ScrollTrigger)
 
 interface ParallaxImageProps {
   src: string
@@ -32,37 +34,24 @@ export default function ParallaxImage({
     const image = imageRef.current
     if (!container || !image) return
 
-    let ctx: any
+    const ctx = gsap.context(() => {
+      gsap.fromTo(
+        image,
+        { y: `-${parallaxIntensity * 100}%` },
+        {
+          y: `${parallaxIntensity * 100}%`,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: container,
+            start: 'top bottom',
+            end: 'bottom top',
+            scrub: 0.5,
+          },
+        }
+      )
+    })
 
-    const initAnimation = async () => {
-      const [gsapModule, { ScrollTrigger }] = await Promise.all([
-        import('gsap'),
-        import('gsap/ScrollTrigger')
-      ])
-      const gsap = gsapModule.default
-      gsap.registerPlugin(ScrollTrigger)
-
-      ctx = gsap.context(() => {
-        gsap.fromTo(
-          image,
-          { y: `-${parallaxIntensity * 100}%` },
-          {
-            y: `${parallaxIntensity * 100}%`,
-            ease: 'none',
-            scrollTrigger: {
-              trigger: container,
-              start: 'top bottom',
-              end: 'bottom top',
-              scrub: 0.5,
-            },
-          }
-        )
-      })
-    }
-
-    initAnimation()
-
-    return () => ctx?.revert()
+    return () => ctx.revert()
   }, [parallaxIntensity])
 
   // Calculate the overflow needed for parallax
