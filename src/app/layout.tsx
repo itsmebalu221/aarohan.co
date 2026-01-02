@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import "../styles/globals.css";
-import ClientLayout from "./ClientLayout";
+import Providers from "./providers";
 
 
 const displayFont = Inter({
@@ -55,7 +55,7 @@ export default function RootLayout({
         <link rel="icon" href="/aarohan.png" />
       </head>
       <body className="bg-void text-ivory antialiased">
-        <ClientLayout>{children}</ClientLayout>
+        <Providers>{children}</Providers>
       </body>
     </html>
   );
