@@ -2,8 +2,8 @@
 
 import { useRef, useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
-import gsap from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
+// import gsap from 'gsap'
+// import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { 
   ParallaxColumn, 
   HorizontalDrift, 
@@ -12,11 +12,22 @@ import {
 import ParallaxImage from '@/components/media/ParallaxImage'
 import PixelBlast, { PixelField, PixelConstellation } from '@/components/effects/PixelBlast'
 
-if (typeof window !== 'undefined') {
-  gsap.registerPlugin(ScrollTrigger)
-}
+// if (typeof window !== 'undefined') {
+//   gsap.registerPlugin(ScrollTrigger)
+// }
 
 export default function Home() {
+  useEffect(() => {
+    const initGSAP = async () => {
+      if (typeof window !== 'undefined') {
+        const gsapModule = await import('gsap')
+        const { ScrollTrigger } = await import('gsap/ScrollTrigger')
+        const gsap = gsapModule.default
+        gsap. registerPlugin(ScrollTrigger)
+      }
+    }
+    initGSAP()
+  }, [])
   return (
     <>
       <EntrySection />
