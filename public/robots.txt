@@ -1,0 +1,5 @@
+# Aarohan Studio
+User-agent: *
+Allow: /
+
+Sitemap: https://aarohan.studio/sitemap.xml
