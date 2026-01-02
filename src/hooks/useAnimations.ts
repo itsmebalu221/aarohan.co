@@ -1,10 +1,8 @@
 'use client'
 
 import { useEffect, useRef, RefObject } from 'react'
-import gsap from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
-gsap.registerPlugin(ScrollTrigger)
+// GSAP will be dynamically imported inside useEffect to avoid SSR issues
 
 interface UseParallaxOptions {
   speed?: number
@@ -29,27 +27,40 @@ export function useParallax<T extends HTMLElement>(
     const element = ref.current
     if (!element) return
 
-    const property = direction === 'vertical' ? 'y' : 'x'
-    const distance = 100 * speed
+    let ctx: any
 
-    const ctx = gsap.context(() => {
-      gsap.fromTo(
-        element,
-        { [property]: -distance },
-        {
-          [property]: distance,
-          ease: 'none',
-          scrollTrigger: {
-            trigger: element,
-            start,
-            end,
-            scrub: true,
-          },
-        }
-      )
-    })
+    const initAnimation = async () => {
+      const [gsapModule, { ScrollTrigger }] = await Promise.all([
+        import('gsap'),
+        import('gsap/ScrollTrigger')
+      ])
+      const gsap = gsapModule.default
+      gsap.registerPlugin(ScrollTrigger)
 
-    return () => ctx.revert()
+      const property = direction === 'vertical' ? 'y' : 'x'
+      const distance = 100 * speed
+
+      ctx = gsap.context(() => {
+        gsap.fromTo(
+          element,
+          { [property]: -distance },
+          {
+            [property]: distance,
+            ease: 'none',
+            scrollTrigger: {
+              trigger: element,
+              start,
+              end,
+              scrub: true,
+            },
+          }
+        )
+      })
+    }
+
+    initAnimation()
+
+    return () => ctx?.revert()
   }, [speed, direction, start, end])
 
   return ref
@@ -63,18 +74,31 @@ export function useScrollProgress(
     const element = ref.current
     if (!element) return
 
-    const ctx = gsap.context(() => {
-      ScrollTrigger.create({
-        trigger: element,
-        start: 'top bottom',
-        end: 'bottom top',
-        onUpdate: (self) => {
-          onProgress?.(self.progress)
-        },
-      })
-    })
+    let ctx: any
 
-    return () => ctx.revert()
+    const initAnimation = async () => {
+      const [gsapModule, { ScrollTrigger }] = await Promise.all([
+        import('gsap'),
+        import('gsap/ScrollTrigger')
+      ])
+      const gsap = gsapModule.default
+      gsap.registerPlugin(ScrollTrigger)
+
+      ctx = gsap.context(() => {
+        ScrollTrigger.create({
+          trigger: element,
+          start: 'top bottom',
+          end: 'bottom top',
+          onUpdate: (self) => {
+            onProgress?.(self.progress)
+          },
+        })
+      })
+    }
+
+    initAnimation()
+
+    return () => ctx?.revert()
   }, [ref, onProgress])
 }
 
@@ -92,24 +116,37 @@ export function useRevealAnimation<T extends HTMLElement>(
     const element = ref.current
     if (!element) return
 
-    gsap.set(element, { opacity: 0, y })
+    let ctx: any
 
-    const ctx = gsap.context(() => {
-      gsap.to(element, {
-        opacity: 1,
-        y: 0,
-        duration,
-        delay,
-        ease: 'power3.out',
-        scrollTrigger: {
-          trigger: element,
-          start: 'top 85%',
-          toggleActions: 'play none none none',
-        },
+    const initAnimation = async () => {
+      const [gsapModule, { ScrollTrigger }] = await Promise.all([
+        import('gsap'),
+        import('gsap/ScrollTrigger')
+      ])
+      const gsap = gsapModule.default
+      gsap.registerPlugin(ScrollTrigger)
+
+      gsap.set(element, { opacity: 0, y })
+
+      ctx = gsap.context(() => {
+        gsap.to(element, {
+          opacity: 1,
+          y: 0,
+          duration,
+          delay,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: element,
+            start: 'top 85%',
+            toggleActions: 'play none none none',
+          },
+        })
       })
-    })
+    }
 
-    return () => ctx.revert()
+    initAnimation()
+
+    return () => ctx?.revert()
   }, [delay, duration, y])
 
   return ref
@@ -128,33 +165,46 @@ export function useSplitTextReveal<T extends HTMLElement>(
     const element = ref.current
     if (!element) return
 
-    // Split text into spans
-    const text = element.textContent || ''
-    const words = text.split(' ')
-    element.innerHTML = words
-      .map(
-        (word) =>
-          `<span class="inline-block overflow-hidden"><span class="inline-block" style="transform: translateY(100%)">${word}</span></span>`
-      )
-      .join(' ')
+    let ctx: any
 
-    const innerSpans = element.querySelectorAll('span > span')
+    const initAnimation = async () => {
+      const [gsapModule, { ScrollTrigger }] = await Promise.all([
+        import('gsap'),
+        import('gsap/ScrollTrigger')
+      ])
+      const gsap = gsapModule.default
+      gsap.registerPlugin(ScrollTrigger)
 
-    const ctx = gsap.context(() => {
-      gsap.to(innerSpans, {
-        y: 0,
-        duration,
-        stagger,
-        ease: 'power3.out',
-        scrollTrigger: {
-          trigger: element,
-          start: 'top 85%',
-          toggleActions: 'play none none none',
-        },
+      // Split text into spans
+      const text = element.textContent || ''
+      const words = text.split(' ')
+      element.innerHTML = words
+        .map(
+          (word) =>
+            `<span class="inline-block overflow-hidden"><span class="inline-block" style="transform: translateY(100%)">${word}</span></span>`
+        )
+        .join(' ')
+
+      const innerSpans = element.querySelectorAll('span > span')
+
+      ctx = gsap.context(() => {
+        gsap.to(innerSpans, {
+          y: 0,
+          duration,
+          stagger,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: element,
+            start: 'top 85%',
+            toggleActions: 'play none none none',
+          },
+        })
       })
-    })
+    }
 
-    return () => ctx.revert()
+    initAnimation()
+
+    return () => ctx?.revert()
   }, [stagger, duration])
 
   return ref

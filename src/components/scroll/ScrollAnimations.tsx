@@ -1,10 +1,8 @@
 'use client'
 
 import { useRef, useEffect, ReactNode } from 'react'
-import gsap from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
-gsap.registerPlugin(ScrollTrigger)
+// GSAP will be dynamically imported inside useEffect to avoid SSR issues
 
 interface ParallaxColumnProps {
   children: ReactNode
@@ -28,24 +26,37 @@ export function ParallaxColumn({
     const yStart = direction === 'down' ? -speed : speed
     const yEnd = direction === 'down' ? speed : -speed
 
-    const ctx = gsap.context(() => {
-      gsap.fromTo(
-        column,
-        { y: yStart },
-        {
-          y: yEnd,
-          ease: 'none',
-          scrollTrigger: {
-            trigger: column.parentElement,
-            start: 'top bottom',
-            end: 'bottom top',
-            scrub: 0.5,
-          },
-        }
-      )
-    })
+    let ctx: any
 
-    return () => ctx.revert()
+    const initAnimation = async () => {
+      const [gsapModule, { ScrollTrigger }] = await Promise.all([
+        import('gsap'),
+        import('gsap/ScrollTrigger')
+      ])
+      const gsap = gsapModule.default
+      gsap.registerPlugin(ScrollTrigger)
+
+      ctx = gsap.context(() => {
+        gsap.fromTo(
+          column,
+          { y: yStart },
+          {
+            y: yEnd,
+            ease: 'none',
+            scrollTrigger: {
+              trigger: column.parentElement,
+              start: 'top bottom',
+              end: 'bottom top',
+              scrub: 0.5,
+            },
+          }
+        )
+      })
+    }
+
+    initAnimation()
+
+    return () => ctx?.revert()
   }, [direction, speed])
 
   return (
@@ -77,24 +88,37 @@ export function HorizontalDrift({
     const xStart = direction === 'right' ? -amount : amount
     const xEnd = direction === 'right' ? amount : -amount
 
-    const ctx = gsap.context(() => {
-      gsap.fromTo(
-        element,
-        { x: xStart },
-        {
-          x: xEnd,
-          ease: 'none',
-          scrollTrigger: {
-            trigger: element,
-            start: 'top bottom',
-            end: 'bottom top',
-            scrub: 0.5,
-          },
-        }
-      )
-    })
+    let ctx: any
 
-    return () => ctx.revert()
+    const initAnimation = async () => {
+      const [gsapModule, { ScrollTrigger }] = await Promise.all([
+        import('gsap'),
+        import('gsap/ScrollTrigger')
+      ])
+      const gsap = gsapModule.default
+      gsap.registerPlugin(ScrollTrigger)
+
+      ctx = gsap.context(() => {
+        gsap.fromTo(
+          element,
+          { x: xStart },
+          {
+            x: xEnd,
+            ease: 'none',
+            scrollTrigger: {
+              trigger: element,
+              start: 'top bottom',
+              end: 'bottom top',
+              scrub: 0.5,
+            },
+          }
+        )
+      })
+    }
+
+    initAnimation()
+
+    return () => ctx?.revert()
   }, [amount, direction])
 
   return (
@@ -123,41 +147,54 @@ export function ScrollReveal({
     const element = revealRef.current
     if (!element) return
 
-    // Set initial state immediately to prevent flash
-    gsap.set(element, { opacity: 0, y })
+    let ctx: any
 
-    // Check if element is already in viewport on load
-    const rect = element.getBoundingClientRect()
-    const isInView = rect.top < window.innerHeight * 0.9
+    const initAnimation = async () => {
+      const [gsapModule, { ScrollTrigger }] = await Promise.all([
+        import('gsap'),
+        import('gsap/ScrollTrigger')
+      ])
+      const gsap = gsapModule.default
+      gsap.registerPlugin(ScrollTrigger)
 
-    if (isInView) {
-      // Element is already visible, animate immediately
-      gsap.to(element, {
-        opacity: 1,
-        y: 0,
-        duration: 0.8,
-        delay: delay + 0.1,
-        ease: 'power3.out',
-      })
-    } else {
-      // Element is below viewport, use scroll trigger
-      const ctx = gsap.context(() => {
+      // Set initial state immediately to prevent flash
+      gsap.set(element, { opacity: 0, y })
+
+      // Check if element is already in viewport on load
+      const rect = element.getBoundingClientRect()
+      const isInView = rect.top < window.innerHeight * 0.9
+
+      if (isInView) {
+        // Element is already visible, animate immediately
         gsap.to(element, {
           opacity: 1,
           y: 0,
           duration: 0.8,
-          delay,
+          delay: delay + 0.1,
           ease: 'power3.out',
-          scrollTrigger: {
-            trigger: element,
-            start: 'top 90%',
-            toggleActions: 'play none none none',
-          },
         })
-      })
-
-      return () => ctx.revert()
+      } else {
+        // Element is below viewport, use scroll trigger
+        ctx = gsap.context(() => {
+          gsap.to(element, {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            delay,
+            ease: 'power3.out',
+            scrollTrigger: {
+              trigger: element,
+              start: 'top 90%',
+              toggleActions: 'play none none none',
+            },
+          })
+        })
+      }
     }
+
+    initAnimation()
+
+    return () => ctx?.revert()
   }, [delay, y])
 
   return (
@@ -184,50 +221,63 @@ export function TextReveal({
     const element = textRef.current
     if (!element) return
 
-    // Split into words, wrap each in overflow-hidden span
-    const words = children.split(' ')
-    element.innerHTML = words
-      .map(
-        (word) =>
-          `<span class="inline-block overflow-hidden"><span class="inline-block translate-y-full will-change-transform">${word}</span></span>`
-      )
-      .join(' ')
+    let ctx: any
 
-    const innerSpans = element.querySelectorAll('span > span')
+    const initAnimation = async () => {
+      const [gsapModule, { ScrollTrigger }] = await Promise.all([
+        import('gsap'),
+        import('gsap/ScrollTrigger')
+      ])
+      const gsap = gsapModule.default
+      gsap.registerPlugin(ScrollTrigger)
 
-    // Set initial state
-    gsap.set(innerSpans, { y: '100%' })
+      // Split into words, wrap each in overflow-hidden span
+      const words = children.split(' ')
+      element.innerHTML = words
+        .map(
+          (word) =>
+            `<span class="inline-block overflow-hidden"><span class="inline-block translate-y-full will-change-transform">${word}</span></span>`
+        )
+        .join(' ')
 
-    // Check if element is already in viewport on load
-    const rect = element.getBoundingClientRect()
-    const isInView = rect.top < window.innerHeight * 0.9
+      const innerSpans = element.querySelectorAll('span > span')
 
-    if (isInView) {
-      // Element is already visible, animate immediately
-      gsap.to(innerSpans, {
-        y: 0,
-        duration: 0.8,
-        stagger: 0.04,
-        ease: 'power3.out',
-        delay: 0.1,
-      })
-    } else {
-      const ctx = gsap.context(() => {
+      // Set initial state
+      gsap.set(innerSpans, { y: '100%' })
+
+      // Check if element is already in viewport on load
+      const rect = element.getBoundingClientRect()
+      const isInView = rect.top < window.innerHeight * 0.9
+
+      if (isInView) {
+        // Element is already visible, animate immediately
         gsap.to(innerSpans, {
           y: 0,
           duration: 0.8,
           stagger: 0.04,
           ease: 'power3.out',
-          scrollTrigger: {
-            trigger: element,
-            start: 'top 90%',
-            toggleActions: 'play none none none',
-          },
+          delay: 0.1,
         })
-      })
-
-      return () => ctx.revert()
+      } else {
+        ctx = gsap.context(() => {
+          gsap.to(innerSpans, {
+            y: 0,
+            duration: 0.8,
+            stagger: 0.04,
+            ease: 'power3.out',
+            scrollTrigger: {
+              trigger: element,
+              start: 'top 90%',
+              toggleActions: 'play none none none',
+            },
+          })
+        })
+      }
     }
+
+    initAnimation()
+
+    return () => ctx?.revert()
   }, [children])
 
   return (

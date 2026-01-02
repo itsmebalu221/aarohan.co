@@ -4,7 +4,8 @@ import { useState, useRef, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import gsap from 'gsap'
+
+// GSAP will be dynamically imported inside useEffect to avoid SSR issues
 
 interface NavItem {
   href: string
@@ -43,25 +44,34 @@ export default function Navigation() {
     const trigger = triggerRef.current
     if (!trigger) return
 
-    const handleMouseMove = (e: MouseEvent) => {
-      const rect = trigger.getBoundingClientRect()
-      const centerX = rect.left + rect.width / 2
-      const centerY = rect.top + rect.height / 2
-      const distance = Math.sqrt(
-        Math.pow(e.clientX - centerX, 2) + Math.pow(e.clientY - centerY, 2)
-      )
-      const maxDistance = 300
-      const scale = 1 + Math.max(0, 1 - distance / maxDistance) * 0.15
-      
-      gsap.to(trigger, {
-        scale,
-        duration: 0.4,
-        ease: 'power2.out',
-      })
+    let gsap: any
+
+    const initGsap = async () => {
+      const gsapModule = await import('gsap')
+      gsap = gsapModule.default
+
+      const handleMouseMove = (e: MouseEvent) => {
+        const rect = trigger.getBoundingClientRect()
+        const centerX = rect.left + rect.width / 2
+        const centerY = rect.top + rect.height / 2
+        const distance = Math.sqrt(
+          Math.pow(e.clientX - centerX, 2) + Math.pow(e.clientY - centerY, 2)
+        )
+        const maxDistance = 300
+        const scale = 1 + Math.max(0, 1 - distance / maxDistance) * 0.15
+        
+        gsap.to(trigger, {
+          scale,
+          duration: 0.4,
+          ease: 'power2.out',
+        })
+      }
+
+      window.addEventListener('mousemove', handleMouseMove)
+      return () => window.removeEventListener('mousemove', handleMouseMove)
     }
 
-    window.addEventListener('mousemove', handleMouseMove)
-    return () => window.removeEventListener('mousemove', handleMouseMove)
+    initGsap()
   }, [])
 
   // Close nav on route change
