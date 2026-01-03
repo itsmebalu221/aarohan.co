@@ -50,7 +50,7 @@ export default function WorkPage() {
       <section className="pt-28 pb-16 md:pt-40 md:pb-24 bg-void">
         <div className="grid-container">
           <motion.h1
-            className="text-display-md sm:text-display-lg md:text-display-xl text-ivory max-w-2xl md:max-w-4xl lg:max-w-5xl mx-auto text-center leading-tight"
+            className="text-display-md sm:text-display-lg md:text-display-xl text-ivory max-w-2xl md:max-w-4xl lg:max-w-5xl text-left leading-tight"
             initial={{ opacity: 0, y: 32 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
