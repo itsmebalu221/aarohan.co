@@ -71,7 +71,7 @@ function EntrySection() {
           transition={{ duration: 0.6, delay: 0.3 }}
         >
           <img src="/aarohan.png" alt="Aarohan" className="h-8 md:h-10 w-auto opacity-70" />
-          <span className="text-label text-gold/40">© 2026</span>
+          <span className="text-label text-gold/40">EVOLVE</span>
         </motion.div>
 
         {/* Middle — Main content */}
