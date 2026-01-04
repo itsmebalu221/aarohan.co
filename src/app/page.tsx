@@ -70,7 +70,7 @@ function EntrySection() {
           animate={{ opacity: isLoaded ? 1 : 0 }}
           transition={{ duration: 0.6, delay: 0.3 }}
         >
-          <img src="/aarohan.png" alt="Aarohan" className="h-8 md:h-10 w-auto opacity-70" />
+          <img src="/aarohan1.png" alt="Aarohan" className="h-8 md:h-10 w-auto opacity-70" />
           <span className="text-label text-gold/40">EVOLVE</span>
         </motion.div>
 
@@ -569,7 +569,7 @@ function ClosingSection() {
         <div className="grid grid-cols-12 gap-gutter pt-block border-t border-mist/10">
           {/* Logo/Name */}
           <div className="col-span-12 md:col-span-4 mb-8 md:mb-0">
-            <img src="/aarohan.png" alt="Aarohan" className="h-8 w-auto mb-2" />
+            <img src="/aarohan1.png" alt="Aarohan" className="h-8 w-auto mb-2" />
             <p className="text-body-sm text-mist/50 mt-2">Digital Excellence</p>
           </div>
 

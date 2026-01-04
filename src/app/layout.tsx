@@ -52,7 +52,7 @@ export default function RootLayout({
           href="https://api.fontshare.com/v2/css?f[]=the-seasons@400,500,600,700&display=swap"
           rel="stylesheet"
         />
-        <link rel="icon" href="/aarohan.png" />
+        <link rel="icon" href="/aarohan1.png" />
       </head>
       <body className="bg-void text-ivory antialiased">
         <Providers>{children}</Providers>

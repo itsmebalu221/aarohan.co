@@ -253,7 +253,7 @@ export default function Navigation() {
               >
                 <div className="max-w-7xl mx-auto flex justify-between items-end">
                   <div className="flex items-center gap-3">
-                    <img src="/aarohan.png" alt="Aarohan" className="h-5 w-auto opacity-60" />
+                    <img src="/aarohan1.png" alt="Aarohan" className="h-5 w-auto opacity-60" />
                     <span className="text-label text-mist/40">Digital Excellence</span>
                   </div>
                   <div className="text-label text-mist/40">
