@@ -70,7 +70,7 @@ function EntrySection() {
           animate={{ opacity: isLoaded ? 1 : 0 }}
           transition={{ duration: 0.6, delay: 0.3 }}
         >
-          <img src="/aarohan1.png" alt="Aarohan" className="h-8 md:h-10 w-auto opacity-70" />
+          <img src="/aarohan1.png" alt="Aarohan" className="h-8 md:h-10 w-auto" />
           <span className="text-label text-gold/40">EVOLVE</span>
         </motion.div>
 
