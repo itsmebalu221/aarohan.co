@@ -4,6 +4,9 @@ import Cursor from "@/components/cursor/Cursor";
 import SmoothScroll from "@/components/scroll/SmoothScroll";
 import PageTransition from "@/components/transitions/PageTransition";
 import Navigation from "@/components/navigation/Navigation";
+import Navbar from "@/components/navigation/Navbar";
+import { ThemeProvider } from "@/components/theme/ThemeProvider";
+import FairyMagic from "@/components/effects/WaterRipple";
 
 export default function Providers({
   children,
@@ -11,15 +14,19 @@ export default function Providers({
   children: React.ReactNode;
 }) {
   return (
-    <SmoothScroll>
-      <div className="noise-overlay" aria-hidden="true" />
+    <ThemeProvider>
+      <SmoothScroll>
+        <div className="noise-overlay" aria-hidden="true" />
+        <FairyMagic />
 
-      <Cursor />
-      <Navigation />
+        <Cursor />
+        <Navbar />
+        <Navigation />
 
-      <PageTransition>
-        <main className="relative">{children}</main>
-      </PageTransition>
-    </SmoothScroll>
+        <PageTransition>
+          <main id="main-content" className="relative">{children}</main>
+        </PageTransition>
+      </SmoothScroll>
+    </ThemeProvider>
   );
 }

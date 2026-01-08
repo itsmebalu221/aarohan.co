@@ -52,7 +52,7 @@ export default function Navigation() {
       )
       const maxDistance = 300
       const scale = 1 + Math.max(0, 1 - distance / maxDistance) * 0.15
-      
+
       gsap.to(trigger, {
         scale,
         duration: 0.4,
@@ -121,16 +121,16 @@ export default function Navigation() {
         aria-label={isOpen ? 'Close navigation' : 'Open navigation'}
       >
         <div className="relative w-11 h-11 flex items-center justify-center">
-          {/* Outer ring */}
+          {/* Outer ring - glass effect */}
           <motion.div
-            className="absolute inset-0 border border-mist/20 rounded-full"
+            className="absolute inset-0 rounded-full glass-subtle"
             animate={{
               scale: isOpen ? 1.15 : 1,
-              borderColor: isOpen ? 'rgba(255,255,255,0.7)' : 'rgba(209,212,218,0.3)',
+              borderColor: isOpen ? 'var(--color-ivory)' : 'var(--color-mist)',
             }}
             transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
           />
-          
+
           {/* Inner content */}
           <div className="relative flex flex-col items-center justify-center gap-[3px]">
             <motion.span
@@ -162,7 +162,7 @@ export default function Navigation() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.4, ease: [0.65, 0, 0.35, 1] }}
-            className="fixed inset-0 z-[90] bg-[#0a0a0c]">
+            className="fixed inset-0 z-[90] glass-overlay">
 
             {/* Navigation Content */}
             <div className="relative h-full flex flex-col justify-center px-gutter">
@@ -186,20 +186,18 @@ export default function Navigation() {
                       className="group flex items-center justify-between py-3 md:py-4"
                     >
                       {/* Index */}
-                      <span className={`text-label w-8 md:w-10 transition-colors duration-300 ${
-                        pathname === item.href ? 'text-ivory' : 'text-mist/50'
-                      }`}>
+                      <span className={`text-label w-8 md:w-10 transition-colors duration-300 ${pathname === item.href ? 'text-ivory' : 'text-mist/50'
+                        }`}>
                         {item.index}
                       </span>
 
                       {/* Main Label */}
                       <div className="flex-1 overflow-hidden">
                         <motion.div
-                          className={`text-display-sm md:text-display-md transition-all duration-300 ${
-                            pathname === item.href 
-                              ? 'text-ivory italic' 
+                          className={`text-display-sm md:text-display-md transition-all duration-300 ${pathname === item.href
+                              ? 'text-ivory italic'
                               : 'text-ivory not-italic'
-                          }`}
+                            }`}
                           animate={{
                             x: hoveredIndex === index ? 16 : 0,
                           }}

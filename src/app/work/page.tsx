@@ -1,6 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
+import Image from 'next/image'
 import Link from 'next/link'
 import { ScrollReveal } from '@/components/scroll/ScrollAnimations'
 
@@ -68,13 +69,16 @@ export default function WorkPage() {
               <ScrollReveal key={project.id}>
                 <Link href={`/work/${project.id}`} className="group block">
                   <article>
-                    <div className="aspect-[4/3] md:aspect-[3/2] overflow-hidden bg-charcoal rounded-lg md:rounded-xl shadow-sm">
-                      <img
+                    <div className="aspect-[4/3] md:aspect-[3/2] overflow-hidden rounded-lg md:rounded-xl relative glass-card">
+                      <Image
                         src={project.image}
-                        alt={project.title}
-                        className="w-full h-full object-cover transition-all duration-700 group-hover:scale-[1.04]"
+                        alt={`${project.title} - ${project.category} project showcase`}
+                        fill
                         sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                        className="object-cover transition-all duration-700 group-hover:scale-[1.04]"
                       />
+                      {/* Subtle glass overlay on hover */}
+                      <div className="absolute inset-0 bg-void/0 group-hover:bg-void/10 group-hover:backdrop-blur-[1px] transition-all duration-500" />
                     </div>
                     <div className="mt-6 md:mt-8 flex flex-col md:flex-row md:items-baseline md:justify-between border-t border-mist/10 pt-5 md:pt-6 gap-2 md:gap-0">
                       <div>
@@ -110,7 +114,7 @@ export default function WorkPage() {
                 <span className="text-gold">Our Craft</span>
               </h2>
               <p className="text-body text-mist/60 max-w-lg mx-auto mb-12">
-                Every great project starts with a conversation. 
+                Every great project starts with a conversation.
                 Let's discuss how we can bring your ideas to life.
               </p>
               <Link

@@ -1,5 +1,14 @@
 # Aarohan Studio
+# https://aarohan.studio
+
 User-agent: *
 Allow: /
 
+# Crawl delay for rate limiting
+Crawl-delay: 1
+
+# Sitemap location
 Sitemap: https://aarohan.studio/sitemap.xml
+
+# Disallow admin/private pages (if any)
+Disallow: /api/

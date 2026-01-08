@@ -1,4 +1,5 @@
 const config = {
+  darkMode: 'class',
   content: [
     './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
     './src/components/**/*.{js,ts,jsx,tsx,mdx}',
@@ -7,11 +8,11 @@ const config = {
   theme: {
     extend: {
       colors: {
-        // Locked color system - no deviations
-        void: '#131215',
-        ivory: '#ffffff',
-        mist: '#d1d4da',
-        gold: '#c7a258',
+        // Dynamic color system using CSS variables
+        void: 'var(--color-void)',
+        ivory: 'var(--color-ivory)',
+        mist: 'var(--color-mist)',
+        gold: 'var(--color-gold)',
       },
       fontFamily: {
         display: ['var(--font-display)', 'serif'],

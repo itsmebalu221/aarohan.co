@@ -27,7 +27,7 @@ export default function ContactPage() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setFormState('submitting')
-    
+
     // Simulate submission
     await new Promise((resolve) => setTimeout(resolve, 1500))
     setFormState('success')
@@ -45,7 +45,7 @@ export default function ContactPage() {
           >
             <span className="text-label text-mist/50 block mb-3">Inquire</span>
           </motion.div>
-          
+
           <motion.h1
             className="text-display-lg text-ivory"
             initial={{ opacity: 0, y: 32 }}
@@ -65,8 +65,8 @@ export default function ContactPage() {
             <div className="col-span-12 lg:col-span-4 mb-block lg:mb-0">
               <ScrollReveal>
                 <p className="text-body-lg text-mist/60 mb-element">
-                  We partner with select clients on meaningful projects. 
-                  If you're ready to build something exceptional, we'd like 
+                  We partner with select clients on meaningful projects.
+                  If you're ready to build something exceptional, we'd like
                   to hear from you.
                 </p>
               </ScrollReveal>
@@ -74,8 +74,8 @@ export default function ContactPage() {
               <ScrollReveal delay={0.1}>
                 <div className="border-t border-mist/10 pt-element mt-element">
                   <span className="text-label text-mist/40 block mb-3">Direct</span>
-                  <a 
-                    href="mailto:hello@aarohan.studio" 
+                  <a
+                    href="mailto:hello@aarohan.studio"
                     className="text-body-md text-ivory hover:text-gold transition-colors duration-250"
                   >
                     hello@aarohan.studio
@@ -180,7 +180,7 @@ export default function ContactPage() {
                       <button
                         type="submit"
                         disabled={formState === 'submitting'}
-                        className="group relative inline-flex items-center gap-4 text-body-lg text-ivory hover:text-gold transition-colors duration-400 disabled:opacity-50"
+                        className="group relative inline-flex items-center gap-4 text-body-lg text-ivory hover:text-gold transition-colors duration-400 disabled:opacity-50 glass-button"
                       >
                         <span>
                           {formState === 'submitting' ? 'Sending...' : 'Send Inquiry'}
@@ -204,8 +204,8 @@ export default function ContactPage() {
               <div className="grid grid-cols-12 gap-gutter">
                 <div className="col-span-12 md:col-span-4">
                   <span className="text-label text-mist/40 block mb-3">New Business</span>
-                  <a 
-                    href="mailto:new@aarohan.studio" 
+                  <a
+                    href="mailto:new@aarohan.studio"
                     className="text-body-md text-mist/60 hover:text-ivory transition-colors duration-250"
                   >
                     new@aarohan.studio
@@ -213,8 +213,8 @@ export default function ContactPage() {
                 </div>
                 <div className="col-span-12 md:col-span-4 mt-6 md:mt-0">
                   <span className="text-label text-mist/40 block mb-3">Press</span>
-                  <a 
-                    href="mailto:press@aarohan.studio" 
+                  <a
+                    href="mailto:press@aarohan.studio"
                     className="text-body-md text-mist/60 hover:text-ivory transition-colors duration-250"
                   >
                     press@aarohan.studio
@@ -223,15 +223,33 @@ export default function ContactPage() {
                 <div className="col-span-12 md:col-span-4 mt-6 md:mt-0">
                   <span className="text-label text-mist/40 block mb-3">Social</span>
                   <div className="flex gap-5">
-                    {['LinkedIn', 'Twitter', 'Instagram'].map((social) => (
-                      <a
-                        key={social}
-                        href="#"
-                        className="text-body-sm text-mist/60 hover:text-ivory transition-colors duration-250"
-                      >
-                        {social}
-                      </a>
-                    ))}
+                    <a
+                      href="https://linkedin.com/company/aarohan-studio"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label="Follow us on LinkedIn"
+                      className="text-body-sm text-mist/60 hover:text-ivory transition-colors duration-250"
+                    >
+                      LinkedIn
+                    </a>
+                    <a
+                      href="https://twitter.com/aarohan_studio"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label="Follow us on Twitter"
+                      className="text-body-sm text-mist/60 hover:text-ivory transition-colors duration-250"
+                    >
+                      Twitter
+                    </a>
+                    <a
+                      href="https://instagram.com/aarohan.studio"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label="Follow us on Instagram"
+                      className="text-body-sm text-mist/60 hover:text-ivory transition-colors duration-250"
+                    >
+                      Instagram
+                    </a>
                   </div>
                 </div>
               </div>
@@ -302,8 +320,8 @@ function SelectButton({
       onClick={onClick}
       className={`
         px-3 py-1.5 text-body-sm border transition-all duration-250
-        ${selected 
-          ? 'border-gold/60 text-gold bg-gold/5' 
+        ${selected
+          ? 'border-gold/60 text-gold bg-gold/5'
           : 'border-mist/20 text-mist/60 hover:border-mist/40 hover:text-mist/80'
         }
       `}
@@ -332,7 +350,7 @@ function SuccessState() {
           Message received
         </h2>
         <p className="text-body-lg text-mist/60">
-          Thank you for reaching out. We'll review your inquiry and 
+          Thank you for reaching out. We'll review your inquiry and
           respond within 48 hours.
         </p>
       </div>
